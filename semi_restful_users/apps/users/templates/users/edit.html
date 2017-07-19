@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Add a user</title>
+</head>
+<body>
+    <h1>Edit user number {{id}}</h1>
+    <form action='/users/{{id}}/update' method='POST'>
+        {% csrf_token %}
+        <label for="first_name">First Name:<input type="text" name="first_name" id="first_name" value="{{first_name}}"></label>
+        <br>
+        <label for="last_name">Last Name:<input type="text" name="last_name" id="last_name" value="{{last_name}}"></label>
+        <br>
+        <label for="email">Email:<input type="email" name="email" id="email" value="{{email}}"></label>
+        <br>
+        <input type="submit" value="Update">
+        <br>
+    </form>
+    <a href="/users">Go Back</a>
+</body>
+</html>
