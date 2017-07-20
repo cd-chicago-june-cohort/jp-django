@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <a href="/home">Home</a>
+    <a href="/logout">Logout</a>
+    <h1>Add a new book title and a review:</h1>
+    <form action="/make_book_entry" method="post" id="new_entry">
+        {% csrf_token %}
+            <label for="title">Book Title: </label>
+            <input type="text" id="title" name="title">
+            <br>
+            <label for="author_list">Choose and existing author: </label>
+            <select name="author" id="author_list">
+
+                {% for author in authors %}
+
+                    <option value="{{author}}">{{ author }}</option>
+
+                {% endfor %}
+
+            </select>
+                 <br>
+            <label for="new_author">Or add a new author: </label>
+            <input type="text" id="new_author" name="author">
+            <br>
+            <label for="review">Review: </label>
+            <textarea name="review" id="review" cols="30" rows="10"></textarea>
+            <br>
+            <label for="rating">Star rating: </label>
+            <select name="rating" id="rating">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+            <br> 
+            <input type="submit" value="Add Book and Review" name="add_book_and_review">  
+    </form>
+    <div id="errors">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</body>
+</html>

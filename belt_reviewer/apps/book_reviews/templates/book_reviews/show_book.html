@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <a href="/home">Home</a>
+    <a href="/logout">Logout</a>
+    <h1>"{{ title }}"</h1>
+    <h2>Author: {{ author }}</h2>
+
+    <h2>Add a review:</h2>
+
+    <form action="/add_review" method="post" id="new_entry">
+    {% csrf_token %}
+        <input type="hidden" name="book" value="{{book}}">
+        <textarea name="review" id="review" cols="30" rows="10"></textarea>
+        <br>
+        <label for="rating">Star rating: </label>
+        <select name="rating" id="rating">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+        <br> 
+        <input type="submit" value="Submit Review" name="sumbit">  
+    </form>
+
+
+    <h1>Reviews</h1>
+    {% for review in reviews %}
+
+        <p><a href="/user/{{review.user.id}}">{{ review.user.first_name }} {{ review.user.last_name }}</a> gave this book {{ review.rating }} stars and wrote:</p>
+        <p>{{ review.content }}</p>
+        <p><em>Posted on {{ review.created_at }}</em></p>
+        <br>
+        {% if review.user.id ==  request.session.user_id  %}
+
+            <form action="/destroy/{{review.id}}/{{review.book.id}}">
+                <input type="submit" value="Delete this review">
+            </form>
+
+        {% endif %}
+
+        <hr>
+
+
+    {% endfor %}
+
+</body>
+</html>
