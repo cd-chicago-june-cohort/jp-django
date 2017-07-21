@@ -16,8 +16,8 @@
 
     <form action="/add_review" method="post" id="new_entry">
     {% csrf_token %}
-        <input type="hidden" name="book" value="{{book}}">
-        <textarea name="review" id="review" cols="30" rows="10"></textarea>
+        <input type="hidden" name="book_id" value="{{book_id}}">
+        <textarea name="content" id="review" cols="30" rows="10"></textarea>
         <br>
         <label for="rating">Star rating: </label>
         <select name="rating" id="rating">

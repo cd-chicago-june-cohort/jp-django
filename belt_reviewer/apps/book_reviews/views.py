@@ -65,16 +65,15 @@ def success(request):
 #-----------------------------------------------------------------
 
 def login(request):
-    
-    user = User.objects.login_validator(request.POST)
 
-    if user:
+    try:
+        user = User.objects.login_validator(request.POST)
         request.session['first_name'] = user.first_name
         request.session['last_name'] = user.last_name
         request.session['email'] = user.email
         request.session['user_id'] = user.id
         return redirect('/success')
-    else:
+    except:
         messages.add_message(request, messages.ERROR, "Invalid login info.")
         return redirect("/")
 
@@ -121,7 +120,10 @@ def make_book_entry(request):
         return redirect("/books/add")
     else:
         title = request.POST['title']
-        author = request.POST['author']
+        if request.POST['author']:
+            author = request.POST['author']
+        else:
+            author = request.POST['author_selection']
         review = request.POST['review']
         rating = int(request.POST['rating'])
         try:
@@ -145,6 +147,7 @@ def display_book(request, parameter):
 
     context = {
         "book": book,
+        "book_id": parameter,
         "title": book.title,
         "author": book.author,
         "reviews": reviews,
@@ -205,3 +208,31 @@ def destroy(request, parameter, book_id):
     redirect_url = "/book/" + str(book_id)
     return redirect(redirect_url)
     #return redirect('/success')
+
+
+#-----------------------------------------------------------------
+#-----------------------------------------------------------------
+
+
+def add_review(request):
+    
+    print "-"*50
+
+    rating = request.POST['rating']
+    print "rating: ", rating
+    content = request.POST['content']
+    print "content: ", content
+    #book_id = request.POST['book_id']
+    book_id = request.POST['book_id']
+    print "request.post.book.id: ",  request.POST['book_id']
+    print "-"*50
+    book = Book.objects.get(id=book_id)
+
+    user_id = request.session['user_id']
+    user = User.objects.get(id=user_id)
+
+    Review.objects.create(rating=rating, content=content, book=book, user=user)
+
+    book_url = '/book/' + str(book_id)
+    return redirect(book_url)
+

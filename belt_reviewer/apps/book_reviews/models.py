@@ -25,7 +25,8 @@ class UserManager(models.Manager):
         except:
             return None
     def login_validator(self, postData):
-        user = User.objects.get(email=postData['email'])
+        email = postData['email']
+        user = User.objects.get(email=email)
         if user:
             if bcrypt.checkpw(postData['password'].encode(), user.password.encode()):
                 return user
@@ -39,7 +40,7 @@ class BookManager(models.Manager):
         errors = {}
         if len(postData['title']) < 1:
             errors['title'] = "You forgot to enter a book."
-        if len(postData['author']) < 1:
+        if len(postData['author']) < 1 and not postData['author_selection']:
             errors['author'] = "You forgot to enter an author."
         if len(postData['review']) < 1:
             errors['review'] = "You forgot to enter a review."

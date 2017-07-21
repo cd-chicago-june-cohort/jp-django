@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^home$', views.home),
     url(r'^user/(?P<parameter>\d+)$', views.show_user),
     url(r'^destroy/(?P<parameter>\d+)/(?P<book_id>\d+)$', views.destroy),
+    url(r'^add_review$', views.add_review),
 ]
